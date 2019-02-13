@@ -1,0 +1,15 @@
+#ignore .classpath, .project
+.classpath
+.project
+
+#ignore all .class
+*.class
+
+#ignore .settings/
+/.settings/
+
+#ignore test class
+BetterKmer.java
+
+#ignore notes to myself
+*.txt
