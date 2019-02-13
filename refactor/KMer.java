@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class KMer{
+public class KMer extends DNA{
 	
 	private int size = 0;
 	private int count;
