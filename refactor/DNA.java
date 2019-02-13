@@ -170,17 +170,14 @@ public class DNA {
 		long start;
 		long end;
 		
-		System.out.println("Please enter a filename: ");
-		try{
-			fileName = sc.nextLine();
-		}
-		catch(Exception e){
-			System.out.println("Usage: Main <filename>" );
+		try {
+			fileName = inquireFileName(sc);
+		} catch (Exception e) {
 			System.exit(1);
 		}
 		
 		try {
-		fIn = opening(fileName);
+			fIn = opening(fileName);
 		} catch (Exception e) {
 			System.exit(1);
 		}
@@ -268,6 +265,21 @@ public class DNA {
 			}
 		}
 		return inp;
+	}
+	
+	public static String inquireFileName(Scanner scan) throws Exception{
+		String filename;
+		System.out.println("Please enter a filename: ");
+		
+		try{
+			filename = scan.nextLine();
+			return filename;
+		}
+		catch(Exception e){
+			System.out.println("Usage: Main <filename>" );
+			throw new Exception();
+		}
+		
 	}
 	
 	public static int Sequencer(int[] n, int s){
