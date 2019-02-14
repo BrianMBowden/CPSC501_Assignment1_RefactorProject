@@ -125,28 +125,4 @@ public class KMer extends DNA{
 		this.count = c;
 	}
 	
-	public static int Sequencer(int[] n, int s){
-		
-		int j = 0;
-		int r = 0;
-		for (int i = 0; i < s; i++){
-			r = (int) Math.pow(10, (s-i) - 1);
-			j += n[i] * r;
-		}
-		return j;
-	}
-
-	
-	public static int decision(char c){
-		int decider = 0;
-		if (c == 'A')
-			decider = 1;
-		else if (c == 'G')
-			decider = 2;
-		else if (c == 'C')
-			decider = 3;
-		else if (c == 'T')
-			decider = 4;
-		return decider;
-	}
 }
