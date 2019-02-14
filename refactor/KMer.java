@@ -8,16 +8,31 @@ import java.util.Scanner;
 
 public class KMer extends DNA{
 	
-	private int size = 0;
+	private int size;
 	private int count;
+	
 	public int hashsize;	
 	public int[] nucleo;
 	public int key;
-	public ArrayDeque<Character> lump = new ArrayDeque<Character>();
-	public HashMap<Integer, ArrayList<Integer>> DNA = new HashMap<Integer, ArrayList<Integer>>();
+	
+	public ArrayDeque<Character> lump;
+	public HashMap<Integer, ArrayList<Integer>> DNA;
 	public int position = 0;
+	
+	private Scanner scan;
+	
 
 	public KMer (BufferedReader fIn){
+		setSize(0);
+		setHashSize(0);
+		setDNA(new HashMap<Integer, ArrayList<Integer>>());
+		setLump(new ArrayDeque<Character>());
+		setScan(new Scanner(fIn));
+		
+	}
+
+	public void solve(){
+		
 		//parses the fasta file
 		
 		int asksize = 0;
@@ -36,15 +51,14 @@ public class KMer extends DNA{
 		nucleo = new int[size];
 		hashsize = (int) Math.pow(5, size);
 		
-		Scanner two = new Scanner(fIn);	//delimiter may not be needed
 		start = System.currentTimeMillis();
-		String s = two.nextLine(); // gets the header of the fasta file
+		String s = scan.nextLine(); // gets the header of the fasta file
 
 		System.out.println(s);
-		ch = two.nextLine();
+		ch = scan.nextLine();
 		
-		while (two.hasNextLine()){
-			ch += two.nextLine();	//The bulk of the file
+		while (scan.hasNextLine()){
+			ch += scan.nextLine();	//The bulk of the file
 		}
 		
 		count = ch.length();
@@ -94,7 +108,7 @@ public class KMer extends DNA{
 		
 		end  = System.currentTimeMillis() - start;
 		System.out.println("time to parse file = " + end + '\n');
-		two.close();		
+		scan.close();		
 	}	
 	
 	public void inquireSize(){
@@ -125,4 +139,20 @@ public class KMer extends DNA{
 		this.count = c;
 	}
 	
+	private void setHashSize(int i) {
+		this.hashsize = i;
+	}
+	
+	public void setScan(Scanner scan) {
+		this.scan = scan.useDelimiter("\n");
+	}
+	
+	public void setDNA(HashMap<Integer, ArrayList<Integer>> dNA) {
+		DNA = dNA;
+	}
+	
+	private void setLump(ArrayDeque<Character> arrayDeque) {
+		this.lump = arrayDeque;
+		
+	}
 }

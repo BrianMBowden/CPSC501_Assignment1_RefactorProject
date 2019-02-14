@@ -185,6 +185,8 @@ public class DNA {
 		
 		KMer chain = new KMer(fIn);
 
+		chain.solve();
+		
 		size = chain.getSize();
 		code = new int[size];
 		
