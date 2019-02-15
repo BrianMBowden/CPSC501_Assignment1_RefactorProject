@@ -185,6 +185,9 @@ public class DNA {
 		
 		KMer chain = new KMer(fIn);
 
+		chain.inquireSize(sc);
+		sc.nextLine(); // Scanner needs to eat a line
+		
 		chain.solve();
 		
 		size = chain.getSize();

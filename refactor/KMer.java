@@ -45,8 +45,6 @@ public class KMer extends DNA{
 		long start;
 		long end;
 
-		inquireSize();
-
 		stray = new char[size];
 		nucleo = new int[size];
 		hashsize = (int) Math.pow(5, size);
@@ -111,12 +109,9 @@ public class KMer extends DNA{
 		scan.close();		
 	}	
 	
-	public void inquireSize(){
-		@SuppressWarnings("resource")
-		Scanner help = new Scanner(System.in);
-		String size = "Please enter the length of the nucleotide string: ";
-		System.out.println(size);
-		this.size = help.nextInt();
+	public void inquireSize(Scanner input){
+		System.out.println("Please enter the length of the nucleotide string: ");
+		setSize(input.nextInt());
 	}
 	
 	public int getSize(){
