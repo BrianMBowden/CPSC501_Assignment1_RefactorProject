@@ -45,26 +45,8 @@ public class KMer extends DNA{
 		char c;
 		int j = 0;
 
-		data = new KMerData(size);
-		
-		hashsize = (int) Math.pow(5, size);
-
-		System.out.println(hashsize);
-		
-		start = System.currentTimeMillis();
-		String s = scan.nextLine(); // gets the header of the fasta file
-
-		System.out.println(s);
-		string = scan.nextLine();
-		
-		while (scan.hasNextLine()){
-			string += scan.nextLine();	//The bulk of the file
-		}
-		
-		count = string.length();
-		System.out.println("count is: " + count);
-		data.setStray(string.toCharArray());
-		
+		initialize();
+		initialScan();
 		
 		while (j < size){						//takes care of initial size queue
 			lump.offer(data.getStrayElement(j));
@@ -107,14 +89,43 @@ public class KMer extends DNA{
 			position++;
 		}
 		
-		end  = System.currentTimeMillis() - start;
-		System.out.println("time to parse file = " + end + '\n');
-		scan.close();		
+		tearDown();
+			
 	}	
 	
 	public void inquireSize(Scanner input){
 		System.out.println("Please enter the length of the nucleotide string: ");
 		setSize(input.nextInt());
+	}
+	
+	private void initialize(){
+		data = new KMerData(size);
+		
+		hashsize = (int) Math.pow(5, size);
+
+		System.out.println(hashsize);
+		start = System.currentTimeMillis();
+	}
+	
+	private void initialScan(){
+		string = scan.nextLine();
+
+		System.out.println(string);
+		string = scan.nextLine();
+		
+		while (scan.hasNextLine()){
+			string += scan.nextLine();		//takes care of newline characters?
+		}
+		
+		count = string.length();
+		System.out.println("count is: " + count);
+		data.setStray(string.toCharArray());
+	}
+	
+	private void tearDown(){
+		end  = System.currentTimeMillis() - start;
+		System.out.println("time to parse file = " + end + '\n');
+		scan.close();	
 	}
 	
 	public int getSize(){
