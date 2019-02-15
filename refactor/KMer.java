@@ -12,7 +12,6 @@ public class KMer extends DNA{
 	private int count;
 	
 	public int hashsize;	
-	public int[] nucleo;
 	public int key;
 	
 	public ArrayDeque<Character> lump;
@@ -20,6 +19,12 @@ public class KMer extends DNA{
 	public int position = 0;
 	
 	private Scanner scan;
+	private KMerData data;
+	
+	private long start;
+	private long end;
+	
+	private String string;
 	
 
 	public KMer (BufferedReader fIn){
@@ -38,46 +43,44 @@ public class KMer extends DNA{
 		int asksize = 0;
 		int sequence = 0;
 		char c;
-		String ch;
-		char[] stray; // KMer chain in char array
 		int j = 0;
-		ArrayList<Integer> buck;
-		long start;
-		long end;
 
-		stray = new char[size];
-		nucleo = new int[size];
+		data = new KMerData(size);
+		
 		hashsize = (int) Math.pow(5, size);
+
+		System.out.println(hashsize);
 		
 		start = System.currentTimeMillis();
 		String s = scan.nextLine(); // gets the header of the fasta file
 
 		System.out.println(s);
-		ch = scan.nextLine();
+		string = scan.nextLine();
 		
 		while (scan.hasNextLine()){
-			ch += scan.nextLine();	//The bulk of the file
+			string += scan.nextLine();	//The bulk of the file
 		}
 		
-		count = ch.length();
+		count = string.length();
 		System.out.println("count is: " + count);
-		stray = ch.toCharArray();
-		buck = new ArrayList<Integer>(); // buckets of the hashmap
+		data.setStray(string.toCharArray());
+		
 		
 		while (j < size){						//takes care of initial size queue
-			lump.offer(stray[j]);
-			nucleo[j] = decision(stray[j]); // the nucleotide being searched for
+			lump.offer(data.getStrayElement(j));
+			data.setNucleoElement(j, decision(data.getStrayElement(j)));
 			j++;
 		}
 		
-		buck.add(position);
-		sequence = Sequencer(nucleo, size);
+		
+		data.getBucket().add(position);
+		sequence = Sequencer(data.getNucleo(), size);
 		key = sequence % hashsize;
 
-		DNA.put(key, buck);
+		getDNA().put(key, data.getBucket());
 		
 		lump.poll();
-		lump.offer(stray[position + size]);
+		lump.offer(data.getStrayElement(position + size));
 
 		position++;
 		
@@ -85,21 +88,21 @@ public class KMer extends DNA{
 			asksize = 0;
 			while (asksize < size){
 				c = lump.poll();
-				nucleo[asksize] = decision(c);
+				data.setNucleoElement(asksize, decision(c));
 				lump.offer(c);
 				asksize++;
 			}
-			sequence = Sequencer(nucleo, size);
+			sequence = Sequencer(data.getNucleo(), size);
 			
-			lump.offer(stray[position + size]);
+			lump.offer(data.getStrayElement(position + size));
 			key = sequence % hashsize;
 			if (DNA.containsKey(key)){			//checks the Map before colliding
 				DNA.get(key).add(position);
 			}
 			else{
-				buck = new ArrayList<Integer>();
-				buck.add(position);
-				DNA.put(key, buck);
+				data.setBucket();
+				data.getBucket().add(position);
+				getDNA().put(key, data.getBucket());
 			}
 			position++;
 		}
@@ -146,6 +149,9 @@ public class KMer extends DNA{
 		DNA = dNA;
 	}
 	
+	public HashMap<Integer, ArrayList<Integer>> getDNA() {
+		return DNA;
+	}
 	private void setLump(ArrayDeque<Character> arrayDeque) {
 		this.lump = arrayDeque;
 		
